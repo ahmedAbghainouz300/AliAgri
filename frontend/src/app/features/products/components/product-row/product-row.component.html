@@ -1,0 +1,12 @@
+<td>
+  <div class="fw-bold">{{ product.name }}</div>
+  <div class="license-text">{{ product.licenseNumber }}</div>
+</td>
+<td>{{ product.stockQuantity }} {{ product.unit }}</td>
+<td>
+  <app-status-badge [status]="getStatus()" [text]="getStatusText()"></app-status-badge>
+</td>
+<td class="text-end">
+  <button class="btn btn-secondary btn-sm me-2" (click)="onEdit()">Modifier</button>
+  <button class="btn btn-danger btn-sm" (click)="onDelete()">Supprimer</button>
+</td>

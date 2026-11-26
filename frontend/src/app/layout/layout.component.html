@@ -1,0 +1,94 @@
+<div class="app-container">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <div class="logo-box">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 19c0-8 5-14 15-14 0 10-6 15-14 15"></path>
+          <path d="M5 19c3-5 6-8 10-10"></path>
+        </svg>
+      </div>
+      <span class="brand-text">AliAgri</span>
+    </div>
+
+    <!-- Main Nav -->
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+        <lucide-icon [img]="icons.LayoutDashboard" size="20"></lucide-icon>
+        <span>Tableau de bord</span>
+      </a>
+      <a routerLink="/products" routerLinkActive="active" class="nav-item">
+        <lucide-icon [img]="icons.Package" size="20"></lucide-icon>
+        <span>Produits</span>
+      </a>
+      <a routerLink="/sales" routerLinkActive="active" class="nav-item">
+        <lucide-icon [img]="icons.ShoppingCart" size="20"></lucide-icon>
+        <span>Ventes</span>
+      </a>
+      <a routerLink="/purchases" routerLinkActive="active" class="nav-item">
+        <lucide-icon [img]="icons.Truck" size="20"></lucide-icon>
+        <span>Achats</span>
+      </a>
+      <a routerLink="/customers" routerLinkActive="active" class="nav-item">
+        <lucide-icon [img]="icons.Users" size="20"></lucide-icon>
+        <span>Clients</span>
+      </a>
+      <a routerLink="/providers" routerLinkActive="active" class="nav-item">
+        <lucide-icon [img]="icons.Truck" size="20"></lucide-icon>
+        <span>Fournisseurs</span>
+      </a>
+      <a routerLink="/reports" routerLinkActive="active" class="nav-item">
+        <lucide-icon [img]="icons.FileText" size="20"></lucide-icon>
+        <span>Rapports</span>
+      </a>
+      <a routerLink="/maintenance" routerLinkActive="active" class="nav-item">
+        <lucide-icon [img]="icons.Settings" size="20"></lucide-icon>
+        <span>Maintenance</span>
+      </a>
+    </nav>
+
+    <!-- Bottom Decoration (The leaves) -->
+    <div class="sidebar-decoration">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path d="M0,100 C30,90 50,70 60,50 C70,70 80,90 100,100 Z" fill="rgba(255,255,255,0.05)" />
+      </svg>
+    </div>
+
+  </aside>
+
+  <!-- Main Wrapper -->
+  <div class="main-wrapper">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="search-box">
+        <lucide-icon [img]="icons.Search" size="18" class="search-icon"></lucide-icon>
+        <input type="text" placeholder="Rechercher...">
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-btn">
+          <lucide-icon [img]="icons.Bell" size="20"></lucide-icon>
+          <span class="notification-dot"></span>
+        </button>
+        <div class="user-profile">
+          <div class="avatar">H</div>
+          <div class="user-info">
+            <span class="name">Hassan A.</span>
+            <span class="role">Gérant</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+</div>

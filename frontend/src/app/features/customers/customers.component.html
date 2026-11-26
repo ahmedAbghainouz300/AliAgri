@@ -1,0 +1,83 @@
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4" style="flex-wrap: wrap; gap: 16px;">
+  <div>
+    <div class="text-muted fw-bold" style="letter-spacing: 0.05em; text-transform: uppercase; font-size: 11px; margin-bottom: 2px;">Répertoire</div>
+    <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.02em;">Clients</h1>
+  </div>
+  <div class="d-flex gap-3">
+    <button class="btn btn-primary" style="height: 38px; padding: 0 16px;" (click)="showAddModal()">
+      + Nouveau client
+    </button>
+  </div>
+</div>
+
+<!-- Main Table Card -->
+<div class="card p-0" style="overflow: hidden;">
+  
+  <!-- Table Toolbar -->
+  <div style="padding: 16px 20px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+    <input type="text" class="form-control" placeholder="Rechercher par nom ou CIN..." style="width: 340px; height: 38px;" [(ngModel)]="searchText">
+    <span class="badge badge-success" style="font-size: 14px;">{{ customers.length }} clients</span>
+  </div>
+
+  <!-- Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Nom et CIN</th>
+        <th>Adresse</th>
+        <th style="text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="loading"><td colspan="3" style="text-align: center; padding: 30px;">Chargement...</td></tr>
+      
+      <ng-container *ngIf="!loading">
+        <tr app-customer-row *ngFor="let c of filteredCustomers" [customer]="c" (edit)="showEditModal($event)" (delete)="confirmDelete($event)"></tr>
+      </ng-container>
+      
+      <tr *ngIf="!loading && filteredCustomers.length === 0">
+        <td colspan="3" style="text-align: center; padding: 40px; color: var(--color-text-muted);">
+          Aucun client trouvé.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add/Edit Modal -->
+<p-dialog 
+  [header]="isEditing ? 'Modifier le client' : 'Ajouter un client'" 
+  [(visible)]="displayModal" 
+  [modal]="true" 
+  [style]="{ width: '500px' }" 
+  [draggable]="false" 
+  [resizable]="false"
+  styleClass="premium-dialog">
+  
+  <div class="modal-form">
+    <div class="form-group">
+      <label>Nom complet</label>
+      <input type="text" pInputText [(ngModel)]="newCustomer.name" placeholder="Ex. Hassan Azhaf" />
+    </div>
+
+    <div class="form-group">
+      <label>CIN / Carte Nationale</label>
+      <input type="text" pInputText [(ngModel)]="newCustomer.idCardNumber" placeholder="Ex. Z135296" />
+    </div>
+
+    <div class="form-group">
+      <label>Adresse</label>
+      <input type="text" pInputText [(ngModel)]="newCustomer.address" placeholder="Ex. Marrakech" />
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <button class="btn btn-secondary" (click)="displayModal = false">Annuler</button>
+      <button class="btn btn-primary" (click)="saveCustomer()">Enregistrer</button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>

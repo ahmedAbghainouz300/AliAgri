@@ -1,0 +1,8 @@
+/* Utility classes for colors */
+.text-success { color: var(--color-success) !important; }
+.text-warning { color: var(--color-warning) !important; }
+
+/* Make the table denser for reports */
+table td, table th {
+  padding: 14px 16px;
+}

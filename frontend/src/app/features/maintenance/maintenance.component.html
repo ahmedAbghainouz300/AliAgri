@@ -1,0 +1,197 @@
+<!-- Hero Header -->
+<div class="hero-header mb-4">
+  <div class="hero-content">
+    <div class="hero-icon">
+      <i class="pi pi-box" style="font-size: 28px; color: var(--color-primary);"></i>
+    </div>
+    <div>
+      <div class="hero-label">MAINTENANCE</div>
+      <h1 class="hero-title">Maintenance</h1>
+      <p class="hero-subtitle">Gérez les données de référence utilisées dans l'application.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Tabs Navigation -->
+<div class="tabs-container mb-4">
+  <button (click)="setTab('categories')" class="tab-btn" [class.active]="activeTab === 'categories'">
+    <i class="pi pi-th-large" style="margin-right: 8px;"></i> Catégories
+  </button>
+  <button (click)="setTab('units')" class="tab-btn" [class.active]="activeTab === 'units'">
+    <i class="pi pi-chart-bar" style="margin-right: 8px;"></i> Unités de mesure
+  </button>
+</div>
+
+<!-- Categories Tab -->
+<div *ngIf="activeTab === 'categories'" class="card p-0" style="overflow: hidden;">
+
+  <!-- Card Header -->
+  <div class="card-header-premium">
+    <div class="header-left">
+      <div class="header-icon">
+        <i class="pi pi-database" style="font-size: 20px; color: var(--color-primary);"></i>
+      </div>
+      <div>
+        <h2 class="header-title">Catégories de produits</h2>
+        <p class="header-subtitle">Gérez les catégories de vos produits agricoles.</p>
+      </div>
+    </div>
+    <!-- FIXED: Changed showCategoryModal to showAddCategory -->
+    <button class="btn btn-primary" (click)="showAddCategory()">
+      <i class="pi pi-plus" style="margin-right: 8px;"></i> Ajouter une catégorie
+    </button>
+  </div>
+
+  <!-- Table -->
+  <table class="premium-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Description</th>
+        <th style="text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cat of categories">
+        <td>
+          <div class="row-product">
+            <div class="row-icon">
+              <i class="pi pi-tag" style="color: var(--color-primary);"></i>
+            </div>
+            <span class="fw-bold">{{ cat.name }}</span>
+          </div>
+        </td>
+        <td class="text-muted">
+          {{ cat.name === 'Pesticide' ? 'Produits de protection des cultures' : 
+             cat.name === 'Fertilizer' ? 'Engrais et amendements' : 
+             cat.name === 'Tool' ? 'Outils agricoles et équipements' : 'Description non disponible' }}
+        </td>
+        <td style="text-align: right;">
+          <div class="action-buttons">
+            <button class="btn btn-secondary btn-sm" (click)="showEditCategory(cat)">
+              <i class="pi pi-pencil" style="margin-right: 4px;"></i> Modifier
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="deleteCategory(cat)">
+              <i class="pi pi-trash" style="margin-right: 4px;"></i> Supprimer
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="categories.length === 0">
+        <td colspan="3" style="text-align: center; padding: 40px; color: var(--color-text-muted);">Aucune catégorie
+          trouvée.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Footer -->
+  <div class="table-footer">
+    <span class="text-muted"><i class="pi pi-info-circle" style="margin-right: 4px;"></i> {{ categories.length }}
+      catégories au total</span>
+    <div class="pagination">
+      <button class="btn btn-secondary btn-sm" disabled>&lt;</button>
+      <button class="btn btn-primary btn-sm">1</button>
+      <button class="btn btn-secondary btn-sm" disabled>&gt;</button>
+    </div>
+  </div>
+</div>
+
+<!-- Units Tab -->
+<div *ngIf="activeTab === 'units'" class="card p-0" style="overflow: hidden;">
+
+  <div class="card-header-premium">
+    <div class="header-left">
+      <div class="header-icon">
+        <i class="pi pi-chart-bar" style="font-size: 20px; color: var(--color-primary);"></i>
+      </div>
+      <div>
+        <h2 class="header-title">Unités de mesure</h2>
+        <p class="header-subtitle">Gérez les unités de vos produits agricoles.</p>
+      </div>
+    </div>
+    <button class="btn btn-primary" (click)="showAddUnit()">
+      <i class="pi pi-plus" style="margin-right: 8px;"></i> Ajouter une unité
+    </button>
+  </div>
+
+  <table class="premium-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th style="text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let unit of units">
+        <td>
+          <div class="row-product">
+            <div class="row-icon">
+              <i class="pi pi-box" style="color: var(--color-primary);"></i>
+            </div>
+            <span class="fw-bold">{{ unit.name }}</span>
+          </div>
+        </td>
+        <td style="text-align: right;">
+          <div class="action-buttons">
+            <button class="btn btn-secondary btn-sm" (click)="showEditUnit(unit)">
+              <i class="pi pi-pencil" style="margin-right: 4px;"></i> Modifier
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="deleteUnit(unit)">
+              <i class="pi pi-trash" style="margin-right: 4px;"></i> Supprimer
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="units.length === 0">
+        <td colspan="2" style="text-align: center; padding: 40px; color: var(--color-text-muted);">Aucune unité trouvée.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="table-footer">
+    <span class="text-muted"><i class="pi pi-info-circle" style="margin-right: 4px;"></i> {{ units.length }} unités au
+      total</span>
+    <div class="pagination">
+      <button class="btn btn-secondary btn-sm" disabled>&lt;</button>
+      <button class="btn btn-primary btn-sm">1</button>
+      <button class="btn btn-secondary btn-sm" disabled>&gt;</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<p-dialog [(visible)]="displayCategoryModal"
+  [header]="isEditingCategory ? 'Modifier la catégorie' : 'Nouvelle catégorie'" [modal]="true"
+  [style]="{width: '400px'}" styleClass="premium-dialog">
+  <div class="modal-form">
+    <div class="form-group">
+      <label>Nom de la catégorie</label>
+      <input type="text" pInputText [(ngModel)]="newCategory.name" placeholder="Ex. Pesticide" />
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <button class="btn btn-secondary" (click)="displayCategoryModal = false">Annuler</button>
+      <button class="btn btn-primary" (click)="saveCategory()">Enregistrer</button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="displayUnitModal" [header]="isEditingUnit ? 'Modifier l\'unité' : 'Nouvelle unité'"
+  [modal]="true" [style]="{width: '400px'}" styleClass="premium-dialog">
+  <div class="modal-form">
+    <div class="form-group">
+      <label>Nom de l'unité</label>
+      <input type="text" pInputText [(ngModel)]="newUnit.name" placeholder="Ex. kg" />
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <button class="btn btn-secondary" (click)="displayUnitModal = false">Annuler</button>
+      <button class="btn btn-primary" (click)="saveUnit()">Enregistrer</button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>

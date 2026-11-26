@@ -1,0 +1,78 @@
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4" style="flex-wrap: wrap; gap: 16px;">
+  <div>
+    <div class="text-muted fw-bold" style="letter-spacing: 0.05em; text-transform: uppercase; font-size: 11px; margin-bottom: 2px;">Partenaires</div>
+    <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.02em;">Fournisseurs</h1>
+  </div>
+  <div class="d-flex gap-3">
+    <button class="btn btn-primary" style="height: 38px; padding: 0 16px;" (click)="showAddModal()">
+      + Nouveau fournisseur
+    </button>
+  </div>
+</div>
+
+<!-- Main Table Card -->
+<div class="card p-0" style="overflow: hidden;">
+  
+  <!-- Table Toolbar -->
+  <div style="padding: 16px 20px; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+    <input type="text" class="form-control" placeholder="Rechercher un fournisseur..." style="width: 340px; height: 38px;" [(ngModel)]="searchText">
+    <span class="badge badge-success" style="font-size: 14px;">{{ providers.length }} fournisseurs</span>
+  </div>
+
+  <!-- Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Téléphone</th>
+        <th style="text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="loading"><td colspan="3" style="text-align: center; padding: 30px;">Chargement...</td></tr>
+      
+      <ng-container *ngIf="!loading">
+        <tr app-provider-row *ngFor="let p of filteredProviders" [provider]="p" (edit)="showEditModal($event)" (delete)="confirmDelete($event)"></tr>
+      </ng-container>
+      
+      <tr *ngIf="!loading && filteredProviders.length === 0">
+        <td colspan="3" style="text-align: center; padding: 40px; color: var(--color-text-muted);">
+          Aucun fournisseur trouvé.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add/Edit Modal -->
+<p-dialog 
+  [header]="isEditing ? 'Modifier le fournisseur' : 'Ajouter un fournisseur'" 
+  [(visible)]="displayModal" 
+  [modal]="true" 
+  [style]="{ width: '500px' }" 
+  [draggable]="false" 
+  [resizable]="false"
+  styleClass="premium-dialog">
+  
+  <div class="modal-form">
+    <div class="form-group">
+      <label>Nom de l'entreprise / Fournisseur</label>
+      <input type="text" pInputText [(ngModel)]="newProvider.name" placeholder="Ex. AgriSupply Co" />
+    </div>
+
+    <div class="form-group">
+      <label>Téléphone</label>
+      <input type="text" pInputText [(ngModel)]="newProvider.phone" placeholder="Ex. 0600000000" />
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="dialog-footer">
+      <button class="btn btn-secondary" (click)="displayModal = false">Annuler</button>
+      <button class="btn btn-primary" (click)="saveProvider()">Enregistrer</button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>

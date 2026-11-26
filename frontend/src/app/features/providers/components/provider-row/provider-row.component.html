@@ -1,0 +1,17 @@
+<td>
+  <div style="display: flex; align-items: center; gap: 14px;">
+    <div style="width: 44px; height: 44px; border-radius: 12px; background: #E8EFE9; color: #0E3B2B; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px;">
+      {{ provider.name.charAt(0).toUpperCase() }}
+    </div>
+    <div>
+      <div class="fw-bold" style="font-size: 15px;">{{ provider.name }}</div>
+    </div>
+  </div>
+</td>
+<td>{{ provider.phone || 'Non spécifié' }}</td>
+<td style="text-align: right;">
+  <div style="display: flex; justify-content: flex-end; gap: 8px;">
+    <button class="btn btn-secondary btn-sm" (click)="onEdit()">Modifier</button>
+    <button class="btn btn-danger btn-sm" (click)="onDelete()">Supprimer</button>
+  </div>
+</td>

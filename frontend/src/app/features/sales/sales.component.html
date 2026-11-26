@@ -1,0 +1,169 @@
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4" style="flex-wrap: wrap; gap: 16px;">
+  <div>
+    <div class="text-muted fw-bold" style="letter-spacing: 0.05em; text-transform: uppercase; font-size: 11px; margin-bottom: 2px;">Transactions</div>
+    <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.02em;">Ventes</h1>
+  </div>
+  <div class="d-flex gap-3">
+    <button class="btn btn-primary" style="height: 38px; padding: 0 16px;" (click)="showModal()">
+      + Nouvelle vente
+    </button>
+  </div>
+</div>
+
+<!-- Main Table Card -->
+<div class="card p-0" style="overflow: hidden;">
+  <table>
+    <thead>
+      <tr>
+        <th>ID / Date</th>
+        <th>Client</th>
+        <th>Articles</th>
+        <th>Total</th>
+        <th style="text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="loading"><td colspan="5" style="text-align: center; padding: 30px;">Chargement...</td></tr>
+      
+      <tr *ngFor="let sale of sales">
+        <td>
+          <div class="fw-bold">#{{ sale.id }}</div>
+          <div class="text-muted">{{ sale.saleDate | date:'dd/MM/yyyy' }}</div>
+        </td>
+        <td>
+          <div class="fw-bold">{{ sale.customer.name }}</div>
+          <div class="text-muted">{{ sale.customer.idCardNumber }}</div>
+        </td>
+        <td>
+          <div *ngFor="let item of sale.items" style="font-size: 13px; margin-bottom: 2px;">
+            <strong>{{ item.quantity }}x</strong> {{ item.productName }}
+          </div>
+        </td>
+        <td style="font-weight: 800; color: var(--color-primary);">
+          {{ sale.totalAmount }} DH
+        </td>
+        <td style="text-align: right;">
+          <button class="btn btn-danger btn-sm" (click)="deleteSale(sale)">Supprimer</button>
+        </td>
+      </tr>
+      
+      <tr *ngIf="!loading && sales.length === 0">
+        <td colspan="5" style="text-align: center; padding: 40px; color: var(--color-text-muted);">
+          Aucune vente enregistrée.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- New Sale Modal -->
+<p-dialog 
+  [(visible)]="displayModal" 
+  [modal]="true" 
+  [style]="{ width: '900px' }" 
+  [draggable]="false" 
+  [resizable]="false" 
+  styleClass="premium-dialog" 
+  header="Enregistrer une nouvelle vente">
+  
+  <!-- Customer Selection -->
+  <div class="form-group" style="margin-bottom: 24px;">
+    <label for="customer">Client</label>
+    <p-dropdown
+      inputId="customer"
+      [options]="customers"
+      [(ngModel)]="selectedCustomerId"
+      optionLabel="name"
+      optionValue="id"
+      placeholder="Sélectionner un client"
+      styleClass="aliagri-select"
+      panelStyleClass="aliagri-select-panel"
+      appendTo="body"
+      [filter]="true"
+      filterBy="name"
+      filterPlaceholder="Rechercher un client..."
+      [showClear]="true"
+      emptyMessage="Aucun client trouvé">
+    </p-dropdown>
+  </div>
+
+  <!-- Add Product Form -->
+  <div style="background: var(--color-background); padding: 20px; border-radius: 12px; display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 16px; align-items: end; margin-bottom: 24px; border: 1px solid var(--color-border);">
+    
+    <div class="form-group">
+      <label for="product">Produit</label>
+      <p-dropdown
+        inputId="product"
+        [options]="products"
+        [(ngModel)]="selectedProductId"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Choisir un produit"
+        styleClass="aliagri-select"
+        panelStyleClass="aliagri-select-panel"
+        appendTo="body"
+        [filter]="true"
+        filterBy="name"
+        filterPlaceholder="Rechercher un produit..."
+        [showClear]="true"
+        emptyMessage="Aucun produit trouvé">
+      </p-dropdown>
+    </div>
+    
+    <div class="form-group">
+      <label>Quantité</label>
+      <p-inputNumber [(ngModel)]="selectedQuantity" [showButtons]="false" [min]="1" class="w-full"></p-inputNumber>
+    </div>
+    
+    <div class="form-group">
+      <label>Prix (DH)</label>
+      <p-inputNumber [(ngModel)]="selectedPrice" [min]="0" class="w-full"></p-inputNumber>
+    </div>
+    
+    <button class="btn btn-secondary" (click)="addItem()" style="height: 44px;">Ajouter</button>
+    
+  </div>
+
+  <!-- Cart Items Table -->
+  <div style="border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden; margin-bottom: 24px;">
+    <table style="margin: 0;">
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>Qté</th>
+          <th>Prix Unitaire</th>
+          <th style="text-align: right;">Total Ligne</th>
+          <th style="width: 50px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of currentItems; let i = index">
+          <td class="fw-bold">{{ item.productName }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.price }} DH</td>
+          <td style="text-align: right; font-weight: 700;">{{ item.quantity * item.price }} DH</td>
+          <td style="text-align: center;">
+            <button class="btn btn-danger btn-sm" (click)="removeItem(i)" style="height: 28px; padding: 0 10px;">✕</button>
+          </td>
+        </tr>
+        <tr *ngIf="currentItems.length === 0">
+          <td colspan="5" style="text-align: center; padding: 30px; color: var(--color-text-muted);">Aucun article ajouté.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--color-border); padding-top: 20px;">
+    <div style="font-size: 22px; font-weight: 800;">
+      Total: <span style="color: var(--color-primary);">{{ getTotal() }} DH</span>
+    </div>
+    <div class="d-flex gap-3">
+      <button class="btn btn-secondary" (click)="displayModal = false">Annuler</button>
+      <button class="btn btn-primary" (click)="saveSale()" [disabled]="currentItems.length === 0 || !selectedCustomerId">Valider la vente</button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>
