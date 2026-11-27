@@ -6,12 +6,16 @@
     <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.02em;">Rapports</h1>
   </div>
   <div class="d-flex gap-3">
+    <button class="btn btn-secondary" style="height: 38px; padding: 0 16px;" (click)="downloadPdf()"
+      [disabled]="isDownloading">
+      <i class="pi pi-file-pdf me-2"></i> PDF
+    </button>
     <button class="btn btn-primary" style="height: 38px; padding: 0 16px;" (click)="downloadExcel()"
       [disabled]="isDownloading">
       @if (isDownloading) {
       Génération...
       } @else {
-      <i class="pi pi-file-excel me-2"></i> Télécharger le registre Excel
+      <i class="pi pi-file-excel me-2"></i> Télécharger Excel
       }
     </button>
   </div>
@@ -24,32 +28,26 @@
     <div class="form-group">
       <label>Période</label>
       <p-calendar [(ngModel)]="dateRange" selectionMode="range" [readonlyInput]="true" dateFormat="dd/mm/yy"
-        placeholder="Du ... au ..." styleClass="premium-calendar" [showIcon]="true" appendTo="body">
+        placeholder="Du ... au ..." styleClass="premium-calendar" appendTo="body">
       </p-calendar>
     </div>
 
     <div class="form-group">
       <label>Client</label>
       <p-dropdown [options]="customers" [(ngModel)]="selectedCustomerId" optionLabel="name" optionValue="id"
-        placeholder="Tous les clients" styleClass="aliagri-select" panelStyleClass="aliagri-select-panel"
-        [showClear]="true" appendTo="body">
-      </p-dropdown>
+        placeholder="Tous les clients" styleClass="aliagri-select" [showClear]="true" appendTo="body"></p-dropdown>
     </div>
 
     <div class="form-group">
       <label>Fournisseur</label>
       <p-dropdown [options]="providers" [(ngModel)]="selectedProviderId" optionLabel="name" optionValue="id"
-        placeholder="Tous les fournisseurs" styleClass="aliagri-select" panelStyleClass="aliagri-select-panel"
-        [showClear]="true" appendTo="body">
-      </p-dropdown>
+        placeholder="Tous les fournisseurs" styleClass="aliagri-select" [showClear]="true" appendTo="body"></p-dropdown>
     </div>
 
     <div class="form-group">
       <label>Produit</label>
       <p-dropdown [options]="products" [(ngModel)]="selectedProductId" optionLabel="name" optionValue="id"
-        placeholder="Tous les produits" styleClass="aliagri-select" panelStyleClass="aliagri-select-panel"
-        [showClear]="true" appendTo="body">
-      </p-dropdown>
+        placeholder="Tous les produits" styleClass="aliagri-select" [showClear]="true" appendTo="body"></p-dropdown>
     </div>
 
     <div class="filters-actions">

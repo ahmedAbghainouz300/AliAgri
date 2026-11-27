@@ -79,7 +79,6 @@ export class ReportsComponent implements OnInit {
 
     const filter: ReportFilter = {};
 
-    // Only send dates if BOTH are selected
     if (
       this.dateRange &&
       this.dateRange.length === 2 &&
@@ -120,8 +119,8 @@ export class ReportsComponent implements OnInit {
     this.isDownloading = true;
     this.downloadSuccess = false;
 
-    this.reportService.downloadRegistre().subscribe({
-      next: (blob) => {
+    this.reportService.downloadExcel().subscribe({
+      next: (blob: Blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -137,6 +136,31 @@ export class ReportsComponent implements OnInit {
       error: () => {
         this.isDownloading = false;
         alert('Erreur lors du téléchargement.');
+      },
+    });
+  }
+
+  downloadPdf() {
+    this.isDownloading = true;
+    this.downloadSuccess = false;
+
+    this.reportService.downloadPdf().subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `registre_${new Date().toISOString().split('T')[0]}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        this.isDownloading = false;
+        this.downloadSuccess = true;
+        setTimeout(() => (this.downloadSuccess = false), 3000);
+      },
+      error: () => {
+        this.isDownloading = false;
+        alert('Erreur lors du téléchargement du PDF.');
       },
     });
   }

@@ -31,14 +31,8 @@ export class ReportService {
   private http = inject(HttpClient);
   private apiUrl = '/api/reports';
 
-  downloadRegistre(): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/registre`, { responseType: 'blob' });
-  }
-
   getReportData(filter: ReportFilter): Observable<ReportRow[]> {
     let params = new HttpParams();
-
-    // Only add parameters if they have a real value
     if (filter.startDate) params = params.set('startDate', filter.startDate);
     if (filter.endDate) params = params.set('endDate', filter.endDate);
     if (filter.customerId) params = params.set('customerId', filter.customerId);
@@ -46,5 +40,13 @@ export class ReportService {
     if (filter.productId) params = params.set('productId', filter.productId);
 
     return this.http.get<ReportRow[]>(`${this.apiUrl}/data`, { params });
+  }
+
+  downloadExcel(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/excel`, { responseType: 'blob' });
+  }
+
+  downloadPdf(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/pdf`, { responseType: 'blob' });
   }
 }
